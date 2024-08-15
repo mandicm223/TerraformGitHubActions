@@ -1,59 +1,85 @@
-# resource "aws_iam_role" "codepipeline_role" {
-#   name = "codepipeline-role"
+# IAM Role for CodeBuild
+resource "aws_iam_role" "codebuild_service_role" {
+  name = "codebuild-service-role"
 
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [{
-#       Effect = "Allow"
-#       Principal = {
-#         Service = "codepipeline.amazonaws.com"
-#       }
-#       Action = "sts:AssumeRole"
-#     }]
-#   })
-# }
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codebuild.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
 
-# resource "aws_iam_role_policy_attachment" "codepipeline_policy_attachment" {
-#   role       = aws_iam_role.codepipeline_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
-# }
+resource "aws_iam_role_policy" "codebuild_service_role_policy" {
+  role = aws_iam_role.codebuild_service_role.id
 
-# resource "aws_iam_role" "codebuild_role" {
-#   name = "codebuild-role"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:*",
+        "logs:*",
+        "cloudwatch:*",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
 
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [{
-#       Effect = "Allow"
-#       Principal = {
-#         Service = "codebuild.amazonaws.com"
-#       }
-#       Action = "sts:AssumeRole"
-#     }]
-#   })
-# }
+# IAM Role for CodeDeploy
+resource "aws_iam_role" "codedeploy_service_role" {
+  name = "codedeploy-service-role"
 
-# resource "aws_iam_role_policy_attachment" "codebuild_policy_attachment" {
-#   role       = aws_iam_role.codebuild_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
-# }
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codedeploy.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
 
-# resource "aws_iam_role" "codedeploy_role" {
-#   name = "codedeploy-role"
+resource "aws_iam_role_policy" "codedeploy_service_role_policy" {
+  role = aws_iam_role.codedeploy_service_role.id
 
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [{
-#       Effect = "Allow"
-#       Principal = {
-#         Service = "codedeploy.amazonaws.com"
-#       }
-#       Action = "sts:AssumeRole"
-#     }]
-#   })
-# }
-
-# resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
-#   role       = aws_iam_role.codedeploy_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
-# }
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:*",
+        "ec2:*",
+        "lambda:*",
+        "autoscaling:*",
+        "sns:*",
+        "cloudwatch:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
