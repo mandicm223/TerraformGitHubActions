@@ -63,7 +63,7 @@ resource "aws_codepipeline" "my_codepipeline" {
 
       configuration = {
         ApplicationName     = aws_codedeploy_app.my_codedeploy_app.name
-        DeploymentGroupName = aws_codedeploy_deployment_group.my_codedeploy_group.name
+        DeploymentGroupName = aws_codedeploy_deployment_group.my_codedeploy_group.deployment_group_name
       }
     }
   }
