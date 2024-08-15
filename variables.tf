@@ -27,7 +27,8 @@ variable "environments" {
   }
 }
 
-variable "github_token" {
+variable "github_secret_name" {
+  default = "GitHubToken"
   description = "GitHub Personal Access Token"
   type        = string
 }
