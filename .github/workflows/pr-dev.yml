@@ -1,0 +1,62 @@
+name: Terraform Workflow
+'on':
+  pull_request:
+    branches:
+      - develop
+env:
+  TF_LOG: INFO
+  AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+  AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+  AWS_SESSION_TOKEN: '${{ secrets.AWS_SESSION_TOKEN }}'
+  BUCKET_TF_STATE: '${{ secrets.BUCKET_TF_STATE }}'
+  TF_STATE_LOCK_TABLE: '${{ secrets.TF_STATE_LOCK_TABLE }}'
+  AWS_REGION: eu-west-1
+jobs:
+  terraform:
+    name: Terraform Infrastructure Change Management
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+      #     aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+      #     aws-session-token: '${{ secrets.AWS_SESSION_TOKEN }}'
+      #     aws-region: eu-west-1
+      # - name: Set AWS Metadata API Timeout
+      #   run: echo "AWS_METADATA_SERVICE_TIMEOUT=0" >> $GITHUB_ENV
+      - name: Terraform Init
+        run: terraform init -backend-config="bucket=${{ env.BUCKET_TF_STATE }}" \
+                            -backend-config="terraformstate/state-bucket" \
+                            -backend-config="region=${{ env.AWS_REGION }}" \
+                            -backend-config="dynamodb_table=${{ env.TF_STATE_LOCK_TABLE }}" \
+                            -backend-config="encrypt=true"
+      - name: Terraform Workspace select
+        run: terraform workspace select dev
+      - name: Terraform Format Check
+        run: terraform fmt -check
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+      - uses: actions/github-script@v7
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: '${{ secrets.TOKEN_GH_PA }}'
+          script: "const output = `#### Terraform Format and Style \U0001F58C\\`${{ steps.fmt.outcome }}\\`\n#### Terraform Initialization ⚙️\\`${{ steps.init.outcome }}\\`\n#### Terraform Validation \U0001F916\\`${{ steps.validate.outcome }}\\`\n<details><summary>Validation Output</summary>\n\n\\`\\`\\`\\n\n${{ steps.validate.outputs.stdout }}\n\\`\\`\\`\n\n</details>\n\n#### Terraform Plan \U0001F4D6\\`${{ steps.plan.outcome }}\\`\n\n<details><summary>Show Plan</summary>\n\n\\`\\`\\`\\n\n${process.env.PLAN}\n\\`\\`\\`\n\n</details>\n\n*Pusher: @${{ github.actor }}, Action: \\`${{ github.event_name }}\\`, Working Directory: \\`${{ env.tf_actions_working_dir }}\\`, Workflow: \\`${{ github.workflow }}\\`*`;\n\ngithub.rest.issues.createComment({\n  issue_number: context.issue.number,\n  owner: context.repo.owner,\n  repo: context.repo.repo,\n  body: output\n})\n"
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
