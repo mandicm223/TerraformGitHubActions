@@ -1,34 +1,29 @@
-# resource "aws_codebuild_project" "my_codebuild_project" {
-#   name          = "my-codebuild-project"
-#   description   = "CodeBuild project for my GitHub repo"
-#   build_timeout = "5" # in minutes
+resource "aws_codebuild_source_credential" "github_credential" {
+  server_type = "GITHUB"
+  auth_type   = "PERSONAL_ACCESS_TOKEN"
+  token       = data.aws_secretsmanager_secret_version.github_token_value.secret_string
+}
 
-#   source {
-#     type            = "GITHUB"
-#     location        = "https://github.com/mandicm223/example-gh-code-pipeline"
-#     git_clone_depth = 1
-#     buildspec       = "buildspec.yml"
-#   }
+resource "aws_codebuild_project" "application_build" {
+  name         = "application-build"
+  service_role = aws_iam_role.codebuild_service_role.arn
 
-#   environment {
-#     compute_type    = "BUILD_GENERAL1_SMALL"
-#     image           = "aws/codebuild/standard:5.0"
-#     type            = "LINUX_CONTAINER"
-#     privileged_mode = true
-#   }
+  source {
+    type            = "GITHUB"
+    location        = "https://github.com/mandicm223/example-gh-code-pipeline"
+    buildspec       = "buildspec.yml" # This should be in your repository root
+    git_clone_depth = 1
+  }
 
-#   service_role = aws_iam_role.codebuild_role.arn
+  artifacts {
+    type      = "S3"
+    location  = aws_s3_bucket.build_artifacts.bucket
+    packaging = "ZIP"
+  }
 
-#   artifacts {
-#     type                   = "S3"
-#     location               = aws_s3_bucket.codepipeline_artifacts.bucket
-#     path                   = "build-output"
-#     packaging              = "ZIP"
-#     name                   = "my-app.zip"
-#     override_artifact_name = true
-#   }
-
-#   cache {
-#     type = "NO_CACHE"
-#   }
-# }
+  environment {
+    compute_type = "BUILD_GENERAL1_SMALL"
+    image        = "aws/codebuild/standard:4.0"
+    type         = "LINUX_CONTAINER"
+  }
+}
