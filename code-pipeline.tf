@@ -54,12 +54,12 @@ resource "aws_codepipeline" "my_codepipeline" {
     name = "Deploy"
 
     action {
-      name             = "CodeDeploy"
-      category         = "Deploy"
-      owner            = "AWS"
-      provider         = "CodeDeploy"
-      version          = "1"
-      input_artifacts  = ["build_output"]
+      name            = "CodeDeploy"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "CodeDeploy"
+      version         = "1"
+      input_artifacts = ["build_output"]
 
       configuration = {
         ApplicationName     = aws_codedeploy_app.my_codedeploy_app.name
