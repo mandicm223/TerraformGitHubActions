@@ -25,7 +25,7 @@ resource "aws_codepipeline" "my_codepipeline" {
 
       configuration = {
         Owner      = "mandicm223"
-        Repo       = "https://github.com/mandicm223/example-gh-code-pipeline"
+        Repo       = "example-gh-code-pipeline"
         Branch     = "main"
         OAuthToken = data.aws_ssm_parameter.gh_access.value
       }
