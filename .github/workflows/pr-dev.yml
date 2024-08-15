@@ -37,8 +37,8 @@ jobs:
       #   run: echo "AWS_METADATA_SERVICE_TIMEOUT=0" >> $GITHUB_ENV
       - name: Terraform Init
         run: terraform init -backend-config="bucket=${{ env.BUCKET_TF_STATE }}" -backend-config="dynamodb_table=${{ env.TF_STATE_LOCK_TABLE }}"
-      - name: Terraform Workspace select
-        run: terraform workspace select dev
+      # - name: Terraform Workspace select
+      #   run: terraform workspace select dev
       - name: Terraform Format Check
         run: terraform fmt -check
       - name: Terraform Validate
