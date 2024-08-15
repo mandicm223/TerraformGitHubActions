@@ -28,7 +28,7 @@ variable "environments" {
 }
 
 variable "github_secret_name" {
-  default = "GitHubToken"
+  default     = "GitHubToken"
   description = "GitHub Personal Access Token"
   type        = string
 }
