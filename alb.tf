@@ -1,11 +1,3 @@
-locals {
-  target_groups = [
-    "green",
-    "blue",
-  ]
-}
-
-
 resource "aws_alb" "main" {
   name            = "cb-load-balancer"
   subnets         = aws_subnet.public.*.id
@@ -13,9 +5,7 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
-  count = length(local.target_groups)
-
-  name        = "${var.lb_target_group_name}-${element(local.target_groups, count.index)}"
+  name        = "cb-target-group"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -39,7 +29,7 @@ resource "aws_alb_listener" "front_end" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group[count.index].app.id
+    target_group_arn = aws_alb_target_group.app.id
     type             = "forward"
   }
 }
