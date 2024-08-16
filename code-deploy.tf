@@ -32,7 +32,7 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   }
 
   deployment_style {
-    deployment_type          = "IN_PLACE"   # Normal deployment
-    deployment_option        = "WITH_TRAFFIC_CONTROL" # Optional, can be WITHOUT_TRAFFIC_CONTROL
+    deployment_type   = "IN_PLACE"             # Normal deployment
+    deployment_option = "WITH_TRAFFIC_CONTROL" # Optional, can be WITHOUT_TRAFFIC_CONTROL
   }
 }
