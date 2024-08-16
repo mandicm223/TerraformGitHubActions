@@ -8,11 +8,14 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   deployment_group_name = "deployment-group"
   service_role_arn      = aws_iam_role.codedeploy_service_role.arn
 
-  deployment_config_name = "CodeDeployDefault.ECSAllAtOnce" # Normal deployment without Blue/Green
+  deployment_style {
+    deployment_type   = "BLUE_GREEN"
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+  }
 
   ecs_service {
-    cluster_name = aws_ecs_cluster.main.name
-    service_name = aws_ecs_service.main.name
+    cluster_name = aws_ecs_cluster.dev_cluster.name
+    service_name = aws_ecs_service.dev_service.name
   }
 
   load_balancer_info {
@@ -29,13 +32,24 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
     }
   }
 
+  blue_green_deployment_config {
+    terminate_blue_instances_on_deployment_success {
+      action                           = "TERMINATE"
+      termination_wait_time_in_minutes = 5
+    }
+
+    deployment_ready_option {
+      action_on_timeout    = "CONTINUE_DEPLOYMENT"
+      wait_time_in_minutes = 10 # Adjust this as needed
+    }
+
+    green_fleet_provisioning_option {
+      action = "DISCOVER_EXISTING"
+    }
+  }
+
   auto_rollback_configuration {
     enabled = true
     events  = ["DEPLOYMENT_FAILURE"]
-  }
-
-  deployment_style {
-    deployment_type   = "BLUE_GREEN"
-    deployment_option = "WITH_TRAFFIC_CONTROL"
   }
 }
