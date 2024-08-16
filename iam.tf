@@ -75,7 +75,17 @@ resource "aws_iam_role_policy" "codedeploy_service_role_policy" {
         "lambda:*",
         "autoscaling:*",
         "sns:*",
-        "cloudwatch:*"
+        "cloudwatch:*",
+        "ecs:DescribeServices",
+        "ecs:UpdateService",
+        "ecs:CreateTaskSet",
+        "ecs:DeleteTaskSet",
+        "ecs:DescribeTaskSets",
+        "ecs:DescribeTasks",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:DescribeTargetHealth",
+        "elasticloadbalancing:RegisterTargets",
+        "elasticloadbalancing:DeregisterTargets"
       ],
       "Resource": "*"
     }
