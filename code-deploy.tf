@@ -25,8 +25,8 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   }
 
   ecs_service {
-    cluster_name = aws_ecs_cluster.my_cluster.name
-    service_name = aws_ecs_service.my_service.name
+    cluster_name = aws_ecs_cluster.main.name
+    service_name = aws_ecs_service.main.name
   }
 
   load_balancer_info {
