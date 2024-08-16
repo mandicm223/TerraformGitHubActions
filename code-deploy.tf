@@ -7,6 +7,7 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   app_name              = aws_codedeploy_app.application.name
   deployment_group_name = "deployment-group"
   service_role_arn      = aws_iam_role.codedeploy_service_role.arn
+  compute_platform = "ECS"
 
   deployment_style {
     deployment_type   = "BLUE_GREEN"
