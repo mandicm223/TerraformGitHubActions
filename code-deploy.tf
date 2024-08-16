@@ -1,6 +1,6 @@
 resource "aws_codedeploy_app" "application" {
   name             = "application"
-  compute_platform = "Server"
+  compute_platform = "ECS"
 }
 
 resource "aws_codedeploy_deployment_group" "deployment_group" {
@@ -8,19 +8,25 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   deployment_group_name = "deployment-group"
   service_role_arn      = aws_iam_role.codedeploy_service_role.arn
 
-  deployment_config_name = "CodeDeployDefault.OneAtATime"
+  blue_green_deployment_config {
+    deployment_ready_option {
+      action_on_timeout = "CONTINUE_DEPLOYMENT"
+    }
 
-  ec2_tag_set {
-    ec2_tag_filter {
-      key   = "Name"
-      type  = "KEY_AND_VALUE"
-      value = "your-ec2-tag-value"
+    terminate_blue_instances_on_deployment_success {
+      action                           = "TERMINATE"
+      termination_wait_time_in_minutes = 5
     }
   }
 
-  auto_rollback_configuration {
-    enabled = true
-    events  = ["DEPLOYMENT_FAILURE"]
+  deployment_style {
+    deployment_type   = "BLUE_GREEN"
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+  }
+
+  ecs_service {
+    cluster_name = aws_ecs_cluster.main.name
+    service_name = aws_ecs_service.main.name
   }
 
   load_balancer_info {
