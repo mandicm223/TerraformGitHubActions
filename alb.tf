@@ -1,5 +1,5 @@
 resource "aws_lb" "main" {
-  name               = "application_load_balancer"
+  name               = "main"
   load_balancer_type = "application"
   subnets            = aws_subnet.public.*.id
   idle_timeout       = 60
