@@ -18,10 +18,13 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   load_balancer_info {
     target_group_pair_info {
       prod_traffic_route {
-        listener_arns = [aws_alb_listener.app_listener.arn] # Replace with your actual ALB listener ARN
+        listener_arns = [aws_lb_listener.dev_listener.arn]
       }
       target_group {
-        name = aws_alb_target_group.app.name
+        name = aws_lb_target_group.blue_tg.name
+      }
+      target_group {
+        name = aws_lb_target_group.green_tg.name
       }
     }
   }
@@ -32,7 +35,7 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   }
 
   deployment_style {
-    deployment_type   = "IN_PLACE"             # Normal deployment
-    deployment_option = "WITH_TRAFFIC_CONTROL" # Optional, can be WITHOUT_TRAFFIC_CONTROL
+    deployment_type   = "BLUE_GREEN"
+    deployment_option = "WITH_TRAFFIC_CONTROL"
   }
 }
