@@ -9,7 +9,7 @@ resource "aws_lb_target_group" "blue_tg" {
   name     = "blue-target-group"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.dev_vpc.id
+  vpc_id   = aws_vpc.main.id
 
   health_check {
     healthy_threshold   = "3"
@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "green_tg" {
   name     = "green-target-group"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.dev_vpc.id
+  vpc_id   = aws_vpc.main.id
 
   health_check {
     healthy_threshold   = "3"
