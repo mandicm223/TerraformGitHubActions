@@ -39,7 +39,7 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
     }
 
     deployment_ready_option {
-      action_on_timeout    = "CONTINUE_DEPLOYMENT"
+      action_on_timeout = "CONTINUE_DEPLOYMENT"
     }
 
     green_fleet_provisioning_option {
