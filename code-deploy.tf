@@ -30,8 +30,5 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   }
 
   load_balancer_info {
-    elb_info {
-      name = aws_alb.main.name
-    }
   }
 }
