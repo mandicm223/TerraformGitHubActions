@@ -1,3 +1,10 @@
+locals {
+  target_groups = [
+    "green",
+    "blue",
+  ]
+}
+
 
 resource "aws_alb" "main" {
   name            = "cb-load-balancer"
@@ -6,7 +13,9 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
-  name        = "cb-target-group"
+  count = length(local.target_groups)
+
+  name        = "${var.lb_target_group_name}-${element(local.target_groups, count.index)}"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id

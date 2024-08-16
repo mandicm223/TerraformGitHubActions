@@ -77,3 +77,8 @@ variable "fargate_memory" {
   description = "Fargate instance memory to provision (in MiB)"
   default     = "1024"
 }
+
+variable "lb_target_group_name" {
+  description = "LB Target group name"
+  default     = "target_group_cb"
+}
