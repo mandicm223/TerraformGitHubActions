@@ -28,10 +28,4 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
     cluster_name = aws_ecs_cluster.main.name
     service_name = aws_ecs_service.main.name
   }
-
-  load_balancer_info {
-    target_group_info {
-      name = "your-target-group-name"
-    }
-  }
 }
