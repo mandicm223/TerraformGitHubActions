@@ -47,7 +47,7 @@ resource "aws_ecs_service" "main" {
     container_port   = var.app_port
   }
 
-  depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
+  depends_on = [aws_alb_listener.app_listener, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
 
   lifecycle {
     ignore_changes = [task_definition, desired_count, load_balancer]
