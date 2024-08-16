@@ -11,17 +11,17 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   deployment_config_name = "CodeDeployDefault.ECSAllAtOnce" # Normal deployment without Blue/Green
 
   ecs_service {
-    cluster_name = aws_ecs_cluster.my_cluster.name
-    service_name = aws_ecs_service.my_service.name
+    cluster_name = aws_ecs_cluster.main.name
+    service_name = aws_ecs_service.main.name
   }
 
   load_balancer_info {
     target_group_pair_info {
       prod_traffic_route {
-        listener_arns = [aws_lb_listener.front_end.arn] # Replace with your actual ALB listener ARN
+        listener_arns = [aws_alb_listener.app_listener.arn] # Replace with your actual ALB listener ARN
       }
       target_group {
-        name = aws_lb_target_group.app.name
+        name = aws_alb_target_group.app.name
       }
     }
   }
