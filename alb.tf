@@ -1,7 +1,9 @@
-resource "aws_alb" "main" {
-  name            = "cb-load-balancer"
-  subnets         = aws_subnet.public.*.id
-  security_groups = [aws_security_group.lb.id]
+resource "aws_lb" "main" {
+  name               = "application_load_balancer"
+  load_balancer_type = "application"
+  subnets            = aws_subnet.public.*.id
+  idle_timeout       = 60
+  security_groups    = [aws_security_group.lb.id]
 }
 
 # Target Group for Blue Environment (Current Version)
@@ -42,7 +44,7 @@ resource "aws_lb_target_group" "green_tg" {
 
 # Listener for Development Traffic
 resource "aws_lb_listener" "dev_listener" {
-  load_balancer_arn = aws_alb.main.arn
+  load_balancer_arn = aws_lb.main.arn
   port              = "80"
   protocol          = "HTTP"
 
