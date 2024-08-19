@@ -40,11 +40,11 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   egress {
-    from_port   = 6379
-    to_port     = 6379
-    protocol    = "tcp"
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "tcp"
     security_groups = [aws_security_group.redis_sg.id]
-    description = "Allow traffic to Redis"
+    description     = "Allow traffic to Redis"
   }
 
   egress {
@@ -61,11 +61,11 @@ resource "aws_security_group" "redis_sg" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port   = 6379
-    to_port     = 6379
-    protocol    = "tcp"
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "tcp"
     security_groups = [aws_security_group.ecs_tasks.id]
-    description = "Allow ECS service access to Redis"
+    description     = "Allow ECS service access to Redis"
   }
 
   egress {

@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "bff_service_app" {
       "networkMode" : "awsvpc",
       environment = [
         {
-          name = "ENV",
+          name  = "ENV",
           value = var.env_bff_service
         },
         {

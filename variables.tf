@@ -57,7 +57,7 @@ variable "env_bff_service" {
 
 variable "clutch_base_url_bff_service" {
   description = "Bff sevice couch base url"
-  default = "https://id-sandbox.asics.com"
+  default     = "https://id-sandbox.asics.com"
 }
 
 variable "clutch_retry_max_attempts_bff_service" {
