@@ -56,7 +56,7 @@ resource "aws_lb_listener" "dev_listener" {
   }
 }
 
-resource "aws_lb_listener" "dev_listener" {
+resource "aws_lb_listener" "test_listener" {
   load_balancer_arn = aws_lb.main.arn
   port              = "8080"
   protocol          = "HTTP"
