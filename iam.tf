@@ -157,7 +157,7 @@ data "aws_iam_policy_document" "ecs_auto_scale_role" {
 
 # ECS auto scale role
 resource "aws_iam_role" "ecs_auto_scale_role" {
-  name               = var.ecs_auto_scale_role_name
+  name               = "EcsAutoScaleRole"
   assume_role_policy = data.aws_iam_policy_document.ecs_auto_scale_role.json
 }
 
