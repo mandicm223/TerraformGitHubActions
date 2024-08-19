@@ -31,9 +31,9 @@ resource "aws_ecs_service" "main" {
   desired_count   = var.app_count
   launch_type     = "FARGATE"
 
-  deployment_controller {
-    type = "CODE_DEPLOY"
-  }
+#   deployment_controller {
+#     type = "CODE_DEPLOY"
+#   }
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_tasks.id]
