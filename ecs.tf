@@ -56,6 +56,6 @@ resource "aws_ecs_service" "main" {
   depends_on = [aws_lb_listener.dev_listener, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
 
   lifecycle {
-    ignore_changes = [task_definition, desired_count, load_balancer]
+    ignore_changes = [desired_count, load_balancer]
   }
 }
