@@ -1,6 +1,6 @@
 # ALB security Group: Edit to restrict access to the application
 resource "aws_security_group" "lb" {
-  name        = "cb-load-balancer-security-group"
+  name        = "load-balancer-security-group"
   description = "controls access to the ALB"
   vpc_id      = aws_vpc.main.id
 
@@ -43,7 +43,6 @@ resource "aws_security_group" "ecs_tasks" {
     from_port       = 6379
     to_port         = 6379
     protocol        = "tcp"
-    security_groups = [aws_security_group.redis_sg.id]
     description     = "Allow traffic to Redis"
   }
 
