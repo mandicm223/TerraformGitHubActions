@@ -8,10 +8,11 @@ resource "aws_lb" "main" {
 
 # Target Group for Blue Environment (Current Version)
 resource "aws_lb_target_group" "blue_tg" {
-  name     = "blue-target-group"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  name        = "blue-target-group"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
 
   health_check {
     healthy_threshold   = "3"
@@ -26,10 +27,11 @@ resource "aws_lb_target_group" "blue_tg" {
 
 # Target Group for Green Environment (New Version)
 resource "aws_lb_target_group" "green_tg" {
-  name     = "green-target-group"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  name        = "green-target-group"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
 
   health_check {
     healthy_threshold   = "3"
