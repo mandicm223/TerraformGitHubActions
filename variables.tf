@@ -51,22 +51,67 @@ variable "bff_ecr_url" {
   default     = "802288441694.dkr.ecr.eu-west-1.amazonaws.com/"
 }
 
-variable "bff_service_environment_variables" {
-  type = map(string)
-  default = {
-    CLUTCH_BASE_URL                                                     = "https://id-sandbox.asics.com"
-    CLUTCH_RETRY_MAX_ATTEMPTS                                           = "3"
-    CLUTCH_RETRY_WAIT_DURATION                                          = "500ms"
-    CLUTCH_CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD                       = "50"
-    CLUTCH_CIRCUIT_BREAKER_RING_BUFFER_SIZE_IN_HALF_OPEN_STATE          = "10"
-    CLUTCH_CIRCUIT_BREAKER_RING_BUFFER_SIZE_IN_CLOSED_STATE             = "100"
-    CLUTCH_CIRCUIT_BREAKER_WAIT_DURATION_IN_OPEN_STATE                  = "30s"
-    CLUTCH_CIRCUIT_BREAKER_PERMITTED_NUMBER_OF_CALLS_IN_HALF_OPEN_STATE = "5"
-    CLUTCH_BULKHEAD_MAX_CONCURRENT_CALLS                                = "100"
-    CLUTCH_TIME_LIMITER_TIMEOUT_DURATION                                = "2s"
-    CLUTCH_RATE_LIMITER_CAPACITY                                        = "2"
-    CLUTCH_RATE_LIMITER_TOKENS                                          = "10"
-    CLUTCH_RATE_LIMITER_PERIOD                                          = "60"
-    CACHE_CONFIG_TTL                                                    = "60"
-  }
+variable "env_bff_service" {
+  default = "dev"
+}
+
+variable "clutch_base_url_bff_service" {
+  description = "Bff sevice couch base url"
+  default     = "https://id-sandbox.asics.com"
+}
+
+variable "clutch_retry_max_attempts_bff_service" {
+  default = "3"
+}
+
+variable "clutch_retry_wait_duration_bff_service" {
+  default = "500ms"
+}
+
+variable "clutch_circuit_breaker_failure_rate_threshold_bff_service" {
+  default = "50"
+}
+
+variable "clutch_circuit_breaker_ring_buffer_size_in_half_open_state_bff_service" {
+  default = "10"
+}
+
+variable "clutch_circuit_breaker_ring_buffer_size_in_closed_state_bff_service" {
+  default = "100"
+}
+
+variable "clutch_circuit_breaker_wait_duration_in_open_state_bff_service" {
+  default = "30s"
+}
+
+variable "clutch_circuit_breaker_permitted_number_of_calls_in_half_open_state_bff_service" {
+  default = "5"
+}
+
+variable "clutch_bulkhead_max_concurrent_calls_bff_service" {
+  default = "100"
+}
+
+variable "clutch_time_limiter_timeout_duration_bff_service" {
+  default = "2s"
+}
+
+variable "clutch_rate_limiter_capacity_bff_service" {
+  default = "2"
+}
+
+variable "clutch_rate_limiter_tokens_bff_service" {
+  default = "10"
+}
+
+variable "clutch_rate_limiter_period_bff_service" {
+  default = "60"
+}
+
+variable "cache_config_ttl_bff_service" {
+  default = "60"
+}
+
+variable "redis_password" {
+  default = ""
 }

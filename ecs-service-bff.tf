@@ -26,10 +26,83 @@ resource "aws_ecs_task_definition" "bff_service_app" {
       "memory" : local.bff_service_fargate_memory
       "networkMode" : "awsvpc",
       environment = [
-        for key, value in var.bff_service_environment_variables : {
-          name  = key
-          value = value
-        }
+        {
+          name  = "ENV",
+          value = var.env_bff_service
+        },
+        {
+          name  = "REDIS_HOST"
+          value = aws_elasticache_cluster.redis.cache_nodes[0].address
+        },
+        {
+          name  = "REDIS_PORT"
+          value = aws_elasticache_cluster.redis.cache_nodes[0].port
+        },
+        {
+          name  = "REDIS_PASSWORD"
+          value = aws_elasticache_cluster.redis.cache_nodes[0].port
+        },
+        {
+          name  = "CLUTCH_BASE_URL"
+          value = var.clutch_base_url_bff_service
+        },
+        {
+          name  = "CLUTCH_RETRY_MAX_ATTEMPTS"
+          value = var.clutch_retry_max_attempts_bff_service
+        },
+        {
+          name  = "CLUTCH_RETRY_WAIT_DURATION"
+          value = var.clutch_retry_wait_duration_bff_service
+        },
+        {
+          name  = "CLUTCH_CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD"
+          value = var.clutch_circuit_breaker_failure_rate_threshold_bff_service
+        },
+        {
+          name  = "CLUTCH_CIRCUIT_BREAKER_RING_BUFFER_SIZE_IN_HALF_OPEN_STATE"
+          value = var.clutch_circuit_breaker_ring_buffer_size_in_half_open_state_bff_service
+        },
+        {
+          name  = "CLUTCH_CIRCUIT_BREAKER_RING_BUFFER_SIZE_IN_CLOSED_STATE"
+          value = var.clutch_circuit_breaker_ring_buffer_size_in_closed_state_bff_service
+        },
+        {
+          name  = "CLUTCH_CIRCUIT_BREAKER_WAIT_DURATION_IN_OPEN_STATE"
+          value = var.clutch_circuit_breaker_wait_duration_in_open_state_bff_service
+        },
+        {
+          name  = "CLUTCH_CIRCUIT_BREAKER_PERMITTED_NUMBER_OF_CALLS_IN_HALF_OPEN_STATE"
+          value = var.clutch_circuit_breaker_permitted_number_of_calls_in_half_open_state_bff_service
+        },
+        {
+          name  = "CLUTCH_BULKHEAD_MAX_CONCURRENT_CALLS"
+          value = var.clutch_bulkhead_max_concurrent_calls_bff_service
+        },
+        {
+          name  = "CLUTCH_TIME_LIMITER_TIMEOUT_DURATION"
+          value = var.clutch_time_limiter_timeout_duration_bff_service
+        },
+        {
+          name  = "CLUTCH_RATE_LIMITER_CAPACITY"
+          value = var.clutch_rate_limiter_capacity_bff_service
+        },
+        {
+          name  = "CLUTCH_RATE_LIMITER_TOKENS"
+          value = var.clutch_rate_limiter_tokens_bff_service
+        },
+        {
+          name  = "CLUTCH_RATE_LIMITER_PERIOD"
+          value = var.clutch_rate_limiter_period_bff_service
+        },
+        {
+          name  = "CACHE_CONFIG_TTL"
+          value = var.cache_config_ttl_bff_service
+        },
+        {
+          name  = "GRAPHIQL_ENABLED"
+          value = "false"
+        },
+
       ]
       "logConfiguration" : {
         "logDriver" : "awslogs",
