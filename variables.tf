@@ -33,47 +33,40 @@ variable "github_secret_name" {
   type        = string
 }
 
-variable "ec2_task_execution_role_name" {
-  description = "ECS task execution role name"
-  default     = "myEcsTaskExecutionRole"
-}
-
-variable "ecs_auto_scale_role_name" {
-  description = "ECS auto scale role name"
-  default     = "myEcsAutoScaleRole"
-}
-
 variable "az_count" {
   description = "Number of AZs to cover in a given region"
   default     = "2"
 }
 
-variable "app_image" {
-  description = "Docker image to run in the ECS cluster"
-  default     = "nginx:latest"
+variable "ports" {
+  default = {
+    bff_service       = 8081
+    asics_api_gateway = 8080
+  }
 }
 
-variable "app_port" {
-  description = "Port exposed by the docker image to redirect traffic to"
-  default     = 8081
-
+### Bff service variables
+variable "bff_ecr_url" {
+  description = "Bff service ECR url"
+  default     = "802288441694.dkr.ecr.eu-west-1.amazonaws.com/"
 }
 
-variable "app_count" {
-  description = "Number of docker containers to run"
-  default     = 2
-}
-
-variable "health_check_path" {
-  default = "/"
-}
-
-variable "fargate_cpu" {
-  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
-  default     = "512"
-}
-
-variable "fargate_memory" {
-  description = "Fargate instance memory to provision (in MiB)"
-  default     = "1024"
+variable "bff_service_environment_variables" {
+  type = map(string)
+  default = {
+    CLUTCH_BASE_URL                                                     = "https://id-sandbox.asics.com"
+    CLUTCH_RETRY_MAX_ATTEMPTS                                           = "3"
+    CLUTCH_RETRY_WAIT_DURATION                                          = "500ms"
+    CLUTCH_CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD                       = "50"
+    CLUTCH_CIRCUIT_BREAKER_RING_BUFFER_SIZE_IN_HALF_OPEN_STATE          = "10"
+    CLUTCH_CIRCUIT_BREAKER_RING_BUFFER_SIZE_IN_CLOSED_STATE             = "100"
+    CLUTCH_CIRCUIT_BREAKER_WAIT_DURATION_IN_OPEN_STATE                  = "30s"
+    CLUTCH_CIRCUIT_BREAKER_PERMITTED_NUMBER_OF_CALLS_IN_HALF_OPEN_STATE = "5"
+    CLUTCH_BULKHEAD_MAX_CONCURRENT_CALLS                                = "100"
+    CLUTCH_TIME_LIMITER_TIMEOUT_DURATION                                = "2s"
+    CLUTCH_RATE_LIMITER_CAPACITY                                        = "2"
+    CLUTCH_RATE_LIMITER_TOKENS                                          = "10"
+    CLUTCH_RATE_LIMITER_PERIOD                                          = "60"
+    CACHE_CONFIG_TTL                                                    = "60"
+  }
 }

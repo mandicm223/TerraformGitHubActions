@@ -7,8 +7,8 @@ resource "aws_lb" "main" {
 }
 
 # Target Group for Blue Environment (Current Version)
-resource "aws_lb_target_group" "blue_tg" {
-  name        = "blue-target-group"
+resource "aws_lb_target_group" "bff_service_blue_tg" {
+  name        = "bff-service-blue-target-group"
   port        = 8081
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -20,7 +20,7 @@ resource "aws_lb_target_group" "blue_tg" {
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
-    path                = var.health_check_path
+    path                = "/"
     unhealthy_threshold = "2"
   }
 }
@@ -47,12 +47,12 @@ resource "aws_lb_target_group" "blue_tg" {
 # Listener for Development Traffic
 resource "aws_lb_listener" "dev_listener" {
   load_balancer_arn = aws_lb.main.arn
-  port              = "8081"
+  port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.blue_tg.arn
+    target_group_arn = aws_lb_target_group.bff_service_blue_tg.arn
   }
 }
 
