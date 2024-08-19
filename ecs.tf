@@ -47,11 +47,11 @@ resource "aws_ecs_service" "main" {
     container_port   = 80
   }
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.green_tg.arn
-    container_name   = "cb-app"
-    container_port   = 80
-  }
+  #   load_balancer {
+  #     target_group_arn = aws_lb_target_group.green_tg.arn
+  #     container_name   = "cb-app"
+  #     container_port   = 80
+  #   }
 
   depends_on = [aws_lb_listener.dev_listener, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
 
