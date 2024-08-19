@@ -68,7 +68,7 @@ resource "aws_ecs_service" "bff_service" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.bff_service_blue_tg.arn
-    container_name   = "bff_service"
+    container_name   = "bff-service"
     container_port   = var.ports.bff_service
   }
 
