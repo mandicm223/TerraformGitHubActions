@@ -95,7 +95,7 @@ EOF
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "role-name"
+  name = "ecs-execution-role"
 
   assume_role_policy = <<EOF
 {
@@ -114,7 +114,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 EOF
 }
 resource "aws_iam_role" "ecs_task_role" {
-  name = "role-name-task"
+  name = "ecs-task-role"
 
   assume_role_policy = <<EOF
 {
