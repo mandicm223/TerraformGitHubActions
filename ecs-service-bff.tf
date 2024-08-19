@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "bff_service_app" {
         "logDriver" : "awslogs",
         "options" : {
           "awslogs-group" : "/ecs/bff-service",
-          "awslogs-region" : "${aws_region}",
+          "awslogs-region" : var.default_region,
           "awslogs-stream-prefix" : "ecs"
         }
       },
@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "bff_service_app" {
 resource "aws_ecs_service" "bff_service" {
   name            = local.bff_service_name
   cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.app.arn
+  task_definition = aws_ecs_task_definition.bff_service_app.arn
   desired_count   = local.bff_service_desired_count
   launch_type     = "FARGATE"
 
