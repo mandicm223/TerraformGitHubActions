@@ -43,13 +43,13 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.blue_tg.arn
-    container_name   = "dev-container"
+    container_name   = "cb-app"
     container_port   = 80
   }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.green_tg.arn
-    container_name   = "dev-container"
+    container_name   = "cb-app"
     container_port   = 80
   }
 
