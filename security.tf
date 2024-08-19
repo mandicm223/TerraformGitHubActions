@@ -40,10 +40,10 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   egress {
-    from_port       = 6379
-    to_port         = 6379
-    protocol        = "tcp"
-    description     = "Allow traffic to Redis"
+    from_port   = 6379
+    to_port     = 6379
+    protocol    = "tcp"
+    description = "Allow traffic to Redis"
   }
 
   egress {
