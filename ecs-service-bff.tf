@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "bff_service_app" {
         },
         {
           name  = "REDIS_HOST"
-          value = to_string(aws_elasticache_replication_group.redis.primary_endpoint_address)
+          value = tostring(aws_elasticache_replication_group.redis.primary_endpoint_address)
         },
         {
           name  = "REDIS_PORT"
