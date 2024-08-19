@@ -19,7 +19,6 @@ resource "aws_elasticache_replication_group" "redis" {
   port                       = 6379
   subnet_group_name          = aws_elasticache_subnet_group.redis_subnet_group.name
   security_group_ids         = [aws_security_group.redis_sg.id]
-  cluster_mode               = enabled
   num_node_groups            = 2 # Number of shards
   replicas_per_node_group    = 1 # Number of replicas per shard
 
