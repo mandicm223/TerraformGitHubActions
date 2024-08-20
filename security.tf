@@ -80,10 +80,10 @@ resource "aws_security_group" "gtw_ecs_tasks" {
   }
 
   egress {
-    from_port       = var.ports.gtw_service
-    to_port         = var.ports.gtw_service
-    protocol        = "tcp"
-  #  security_groups = [aws_security_group.bff_lb.id] # Allow traffic to the private LB
+    from_port = var.ports.gtw_service
+    to_port   = var.ports.gtw_service
+    protocol  = "tcp"
+    #  security_groups = [aws_security_group.bff_lb.id] # Allow traffic to the private LB
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
