@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "gtw_service_app" {
         },
         {
           name  = "BFF_URL"
-          value = aws_lb.bff_alb.dns_name
+          value = "http://localhost:8081"
         },
         {
           name  = "RATE_LIMITER_REPLENISH_RATE"
