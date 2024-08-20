@@ -134,7 +134,7 @@ resource "aws_ecs_service" "bff_service" {
   #   }
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id]
+    security_groups  = [aws_security_group.bff_ecs_tasks.id]
     subnets          = aws_subnet.private.*.id
     assign_public_ip = true
   }

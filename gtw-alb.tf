@@ -1,16 +1,16 @@
-resource "aws_lb" "main" {
-  name               = "main"
+resource "aws_lb" "gtw_alb" {
+  name               = "gtw-alb"
   load_balancer_type = "application"
-  internal           = true
-  subnets            = aws_subnet.private.*.id
+  internal           = false
+  subnets            = aws_subnet.public.*.id
   idle_timeout       = 60
-  security_groups    = [aws_security_group.lb.id]
+  security_groups    = [aws_security_group.gtw_lb.id]
 }
 
 # Target Group for Blue Environment (Current Version)
-resource "aws_lb_target_group" "bff_service_blue_tg" {
+resource "aws_lb_target_group" "gtw_service_blue_tg" {
   name        = "bff-service-tg"
-  port        = 8081
+  port        = 8080
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
@@ -46,14 +46,14 @@ resource "aws_lb_target_group" "bff_service_blue_tg" {
 # }
 
 # Listener for Development Traffic
-resource "aws_lb_listener" "dev_listener" {
+resource "aws_lb_listener" "gtw_listener" {
   load_balancer_arn = aws_lb.main.arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.bff_service_blue_tg.arn
+    target_group_arn = aws_lb_target_group.gtw_service_blue_tg.arn
   }
 }
 
