@@ -9,19 +9,19 @@ resource "aws_lb" "main" {
 # Target Group for Blue Environment (Current Version)
 resource "aws_lb_target_group" "bff_service_blue_tg" {
   name        = "bff-service-blue-target-group"
-  port        = 80
+  port        = var.ports.bff_service
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
 
   health_check {
-    healthy_threshold   = "3"
-    interval            = "30"
+    healthy_threshold   = "2"
+    interval            = "60"
     protocol            = "HTTP"
     matcher             = "200"
-    timeout             = "3"
+    timeout             = "30"
     path                = "/health"
-    unhealthy_threshold = "2"
+    unhealthy_threshold = "5"
   }
 }
 
