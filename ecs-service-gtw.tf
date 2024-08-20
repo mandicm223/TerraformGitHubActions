@@ -118,8 +118,8 @@ resource "aws_ecs_service" "gtw_service" {
   #   }
 
   network_configuration {
-    security_groups  = [aws_security_group.bff_ecs_tasks.id]
-    subnets          = aws_subnet.private.*.id
+    security_groups  = [aws_security_group.gtw_ecs_tasks.id]
+    subnets          = aws_subnet.public[*].id
     assign_public_ip = true
   }
 
