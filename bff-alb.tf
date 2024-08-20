@@ -47,7 +47,7 @@ resource "aws_lb_target_group" "bff_service_blue_tg" {
 
 # Listener for Development Traffic
 resource "aws_lb_listener" "dev_listener" {
-  load_balancer_arn = aws_lb.bff_alb.arn
+  load_balancer_arn = aws_lb.gtw_alb.arn
   port              = "8081"
   protocol          = "HTTP"
 
