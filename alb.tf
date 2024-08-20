@@ -20,7 +20,7 @@ resource "aws_lb_target_group" "bff_service_blue_tg" {
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "3"
-    path                = "/"
+    path                = "/health"
     unhealthy_threshold = "2"
   }
 }
