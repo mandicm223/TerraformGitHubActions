@@ -123,7 +123,7 @@ variable "asics_auth_client_id" {
 }
 
 variable "asics_auth_client_secret" {
-  default = "5_doz-wKGDvfAKc-LXL-IkHpvXDSpSiW"
+  default = "testttttttt"
 }
 
 variable "asics_auth_introspect_endpoint" {
