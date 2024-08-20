@@ -112,6 +112,6 @@ variable "cache_config_ttl_bff_service" {
   default = "60"
 }
 
-variable "redis_password" {
+variable "redis_password_bff_service" {
   default = ""
 }
