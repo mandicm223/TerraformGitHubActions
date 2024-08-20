@@ -8,7 +8,7 @@ resource "aws_security_group" "bff_lb" {
     protocol        = "tcp"
     from_port       = var.ports.bff_service
     to_port         = var.ports.bff_service
-    security_groups = aws_security_group.gtw_ecs_tasks.id
+    security_groups = [aws_security_group.gtw_ecs_tasks.id]
   }
 
   egress {
