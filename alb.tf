@@ -1,7 +1,7 @@
 resource "aws_lb" "main" {
   name               = "main"
   load_balancer_type = "application"
-  subnets            = aws_subnet.public.*.id
+  subnets            = aws_subnet.private.*.id
   idle_timeout       = 60
   security_groups    = [aws_security_group.lb.id]
 }
@@ -9,7 +9,7 @@ resource "aws_lb" "main" {
 # Target Group for Blue Environment (Current Version)
 resource "aws_lb_target_group" "bff_service_blue_tg" {
   name        = "bff-service-blue-target-group"
-  port        = var.ports.bff_service
+  port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
