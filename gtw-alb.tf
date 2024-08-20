@@ -9,7 +9,7 @@ resource "aws_lb" "gtw_alb" {
 
 # Target Group for Blue Environment (Current Version)
 resource "aws_lb_target_group" "gtw_service_blue_tg" {
-  name        = "bff-service-tg"
+  name        = "gtw-service-tg"
   port        = 8080
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
