@@ -15,13 +15,13 @@ resource "aws_lb_target_group" "bff_service_blue_tg" {
   target_type = "ip"
 
   health_check {
-    healthy_threshold   = "3"
-    interval            = "30"
+    healthy_threshold   = "2"
+    interval            = "60"
     protocol            = "HTTP"
     matcher             = "200"
-    timeout             = "3"
+    timeout             = "30"
     path                = "/health"
-    unhealthy_threshold = "2"
+    unhealthy_threshold = "5"
   }
 }
 
