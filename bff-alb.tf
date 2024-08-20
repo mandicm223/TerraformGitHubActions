@@ -1,10 +1,10 @@
-resource "aws_lb" "main" {
-  name               = "main"
+resource "aws_lb" "bff_alb" {
+  name               = "bff-alb"
   load_balancer_type = "application"
   internal           = true
   subnets            = aws_subnet.private.*.id
   idle_timeout       = 60
-  security_groups    = [aws_security_group.lb.id]
+  security_groups    = [aws_security_group.bff_lb.id]
 }
 
 # Target Group for Blue Environment (Current Version)
@@ -47,8 +47,8 @@ resource "aws_lb_target_group" "bff_service_blue_tg" {
 
 # Listener for Development Traffic
 resource "aws_lb_listener" "dev_listener" {
-  load_balancer_arn = aws_lb.main.arn
-  port              = "80"
+  load_balancer_arn = aws_lb.bff_alb.arn
+  port              = "8081"
   protocol          = "HTTP"
 
   default_action {

@@ -40,8 +40,8 @@ variable "az_count" {
 
 variable "ports" {
   default = {
-    bff_service       = 8081
-    asics_api_gateway = 8080
+    bff_service = 8081
+    gtw_service = 8080
   }
 }
 
@@ -114,4 +114,50 @@ variable "cache_config_ttl_bff_service" {
 
 variable "redis_password_bff_service" {
   default = ""
+}
+
+### Gtw service variables
+
+variable "asics_auth_client_id" {
+  default = "one_asics_be_staging"
+}
+
+variable "asics_auth_client_secret" {
+  default = "5_doz-wKGDvfAKc-LXL-IkHpvXDSpSiW"
+}
+
+variable "asics_auth_introspect_endpoint" {
+  default = "https://id-sandbox.asics.com/api/v2/introspect"
+}
+
+variable "rate_limiter_replenish_rate" {
+  default = "10"
+}
+
+variable "rate_limiter_burst_capacity" {
+  default = "20"
+}
+
+variable "retry_count" {
+  default = "3"
+}
+
+variable "request_size" {
+  default = "2MB"
+}
+
+variable "circuit_breaker_sliding_window_size" {
+  default = "100"
+}
+
+variable "circuit_breaker_permitted_calls" {
+  default = "10"
+}
+
+variable "circuit_breaker_wait_duration" {
+  default = "10000"
+}
+
+variable "circuit_breaker_failure_rate_threshold" {
+  default = "50"
 }
