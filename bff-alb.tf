@@ -1,4 +1,4 @@
-resource "aws_lb" "main" {
+resource "aws_lb" "bff_alb" {
   name               = "bff-alb"
   load_balancer_type = "application"
   internal           = true
@@ -47,7 +47,7 @@ resource "aws_lb_target_group" "bff_service_blue_tg" {
 
 # Listener for Development Traffic
 resource "aws_lb_listener" "dev_listener" {
-  load_balancer_arn = aws_lb.main.arn
+  load_balancer_arn = aws_lb.bff_alb.arn
   port              = "8081"
   protocol          = "HTTP"
 

@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "gtw_service_app" {
         },
         {
           name  = "BFF_URL"
-          value = aws_lb.gtw_alb.dns_name
+          value = aws_lb.bff_alb
         },
         {
           name  = "RATE_LIMITER_REPLENISH_RATE"
