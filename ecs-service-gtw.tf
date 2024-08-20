@@ -1,5 +1,5 @@
 locals {
-  bff_service_docker_image   = format("%sasics-gtw:latest", var.bff_ecr_url)
+  gtw_service_docker_image   = format("%sasics-gtw:latest", var.bff_ecr_url)
   gtw_service_name           = "gtw-service"
   gtw_service_desired_count  = 2
   gtw_service_fargate_cpu    = 512
@@ -17,9 +17,9 @@ resource "aws_ecs_task_definition" "gtw_service_app" {
   container_definitions = jsonencode([
     {
       "name" : local.gtw_service_name
-      "image" : local.bff_service_docker_image,
-      "cpu" : local.bff_service_fargate_cpu,
-      "memory" : local.bff_service_fargate_memory
+      "image" : local.gtw_service_docker_image,
+      "cpu" : local.gtw_service_fargate_cpu,
+      "memory" : local.gtw_service_fargate_memory
       "networkMode" : "awsvpc",
       environment = [
         {
