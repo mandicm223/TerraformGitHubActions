@@ -4,7 +4,7 @@ resource "aws_lb" "bff_alb" {
   internal           = true
   subnets            = aws_subnet.private.*.id
   idle_timeout       = 60
-  security_groups    = [aws_security_group.bff_lb.id]
+  security_groups    = [aws_security_group.lb.id]
 }
 
 # Target Group for Blue Environment (Current Version)
