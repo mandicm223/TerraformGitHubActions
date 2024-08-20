@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "bff_service_app" {
         },
         {
           name  = "REDIS_HOST"
-          value = tostring(aws_elasticache_replication_group.redis.primary_endpoint_address)
+          value = tostring(aws_elasticache_replication_group.redis.configuration_endpoint_address)
         },
         {
           name  = "REDIS_PORT"
@@ -40,7 +40,7 @@ resource "aws_ecs_task_definition" "bff_service_app" {
         },
         {
           name  = "REDIS_PASSWORD"
-          value = var.redis_password
+          value = var.redis_password_bff_service
         },
         {
           name  = "CLUTCH_BASE_URL"
