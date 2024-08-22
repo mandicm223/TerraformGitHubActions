@@ -1,9 +1,21 @@
+data "aws_elasticache_replication_group" "redis_cluster" {
+  replication_group_id = aws_elasticache_replication_group.redis.id
+}
+
 locals {
   gtw_service_docker_image   = format("%sasics-gtw:latest", var.bff_ecr_url)
   gtw_service_name           = "gtw-service"
   gtw_service_desired_count  = 2
   gtw_service_fargate_cpu    = 512
   gtw_service_fargate_memory = 1024
+
+
+  primary_endpoint = data.aws_elasticache_replication_group.redis_cluster.primary_endpoint_address
+  reader_endpoint  = data.aws_elasticache_replication_group.redis_cluster.reader_endpoint_address
+
+  # If the cluster mode endpoint information is available
+  redis_endpoints_combined = join(",", compact([local.primary_endpoint, local.reader_endpoint]))
+
 
 }
 
@@ -23,20 +35,12 @@ resource "aws_ecs_task_definition" "gtw_service_app" {
       "networkMode" : "awsvpc",
       environment = [
         {
-          name  = "ENV",
+          name  = "SPRING_PROFILES_ACTIVE",
           value = var.env_bff_service
         },
         {
-          name  = "REDIS_HOST"
-          value = tostring(aws_elasticache_replication_group.redis.configuration_endpoint_address)
-        },
-        {
-          name  = "REDIS_PORT"
-          value = tostring(aws_elasticache_replication_group.redis.port)
-        },
-        {
-          name  = "REDIS_PASSWORD"
-          value = var.redis_password_bff_service
+          name  = "REDIS_NODES"
+          value = local.redis_endpoints_combined
         },
         {
           name  = "ASICS_AUTH_CLIENT_ID"
@@ -52,7 +56,7 @@ resource "aws_ecs_task_definition" "gtw_service_app" {
         },
         {
           name  = "BFF_URL"
-          value = format("http://%s", aws_lb.bff_alb.dns_name)
+          value = format("http://%s:%s", aws_lb.bff_alb.dns_name, var.ports.bff_service)
         },
         {
           name  = "RATE_LIMITER_REPLENISH_RATE"

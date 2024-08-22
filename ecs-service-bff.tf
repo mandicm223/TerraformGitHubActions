@@ -27,20 +27,12 @@ resource "aws_ecs_task_definition" "bff_service_app" {
       "networkMode" : "awsvpc",
       environment = [
         {
-          name  = "ENV",
+          name  = "SPRING_PROFILES_ACTIVE",
           value = var.env_bff_service
         },
         {
-          name  = "REDIS_HOST"
-          value = tostring(aws_elasticache_replication_group.redis.configuration_endpoint_address)
-        },
-        {
-          name  = "REDIS_PORT"
-          value = tostring(aws_elasticache_replication_group.redis.port)
-        },
-        {
-          name  = "REDIS_PASSWORD"
-          value = var.redis_password_bff_service
+          name  = "REDIS_NODES"
+          value = local.redis_endpoints_combined
         },
         {
           name  = "CLUTCH_BASE_URL"
