@@ -9,25 +9,13 @@ locals {
   gtw_service_fargate_cpu    = 512
   gtw_service_fargate_memory = 1024
 
-  node_groups = data.aws_elasticache_replication_group.redis_cluster.node_groups
 
-  primary_endpoints = flatten([
-    for ng in local.node_groups : [
-      ng.primary_endpoint_address
-    ]
-  ])
+  primary_endpoint = data.aws_elasticache_replication_group.redis_cluster.primary_endpoint_address
+  reader_endpoint  = data.aws_elasticache_replication_group.redis_cluster.reader_endpoint_address
 
-  replica_endpoints = flatten([
-    for ng in local.node_groups : [
-      for rm in ng.node_group_members : rm.read_endpoint_address
-    ]
-  ])
+  # If the cluster mode endpoint information is available
+  redis_endpoints_combined = join(",", compact([local.primary_endpoint, local.reader_endpoint]))
 
-  # Concatenate both primary and replica endpoints
-  all_endpoints = concat(local.primary_endpoints, local.replica_endpoints)
-
-  # Create a comma-delimited string of all endpoints
-  redis_endpoints_combined = join(",", local.all_endpoints)
 
 }
 
