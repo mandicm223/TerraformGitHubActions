@@ -1,9 +1,33 @@
+data "aws_elasticache_replication_group" "redis_cluster" {
+  replication_group_id = aws_elasticache_replication_group.redis.id
+}
+
 locals {
   bff_service_docker_image   = format("%sasics-bff:latest", var.bff_ecr_url)
   bff_service_name           = "bff-service"
   bff_service_desired_count  = 2
   bff_service_fargate_cpu    = 512
   bff_service_fargate_memory = 1024
+
+  node_groups = data.aws_elasticache_replication_group.redis_cluster.node_groups
+
+  primary_endpoints = flatten([
+    for ng in local.node_groups : [
+      ng.primary_endpoint_address
+    ]
+  ])
+
+  replica_endpoints = flatten([
+    for ng in local.node_groups : [
+      for rm in ng.node_group_members : rm.read_endpoint_address
+    ]
+  ])
+
+  # Concatenate both primary and replica endpoints
+  all_endpoints = concat(local.primary_endpoints, local.replica_endpoints)
+
+  # Create a comma-delimited string of all endpoints
+  redis_endpoints_combined = join(",", local.all_endpoints)
 
 }
 
@@ -27,20 +51,12 @@ resource "aws_ecs_task_definition" "bff_service_app" {
       "networkMode" : "awsvpc",
       environment = [
         {
-          name  = "ENV",
+          name  = "SPRING_PROFILES_ACTIVE",
           value = var.env_bff_service
         },
         {
-          name  = "REDIS_HOST"
-          value = tostring(aws_elasticache_replication_group.redis.configuration_endpoint_address)
-        },
-        {
-          name  = "REDIS_PORT"
-          value = tostring(aws_elasticache_replication_group.redis.port)
-        },
-        {
-          name  = "REDIS_PASSWORD"
-          value = var.redis_password_bff_service
+          name  = "REDIS_NODES"
+          value = local.redis_endpoints_combined
         },
         {
           name  = "CLUTCH_BASE_URL"
