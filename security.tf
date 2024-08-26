@@ -6,7 +6,7 @@ resource "aws_security_group" "lb" {
 
   ingress {
     protocol        = "tcp"
-    from_port       = var.ports.http   # staviti 80
+    from_port       = var.ports.http # staviti 80
     to_port         = var.ports.http
     security_groups = [aws_security_group.gtw_ecs_tasks.id]
   }

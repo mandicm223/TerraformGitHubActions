@@ -42,7 +42,7 @@ variable "ports" {
   default = {
     bff_service = 8081
     gtw_service = 8080
-    http = 80
+    http        = 80
   }
 }
 
