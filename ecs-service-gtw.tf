@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "gtw_service_app" {
         },
         {
           name  = "BFF_URL"
-          value = format("http://%s:%s", aws_lb.bff_alb.dns_name, var.ports.bff_service)
+          value = format("http://%s", aws_lb.bff_alb.dns_name)
         },
         {
           name  = "RATE_LIMITER_REPLENISH_RATE"
