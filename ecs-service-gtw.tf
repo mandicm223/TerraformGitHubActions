@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "gtw_service_app" {
         },
         {
           name  = "BFF_URL"
-          value = format("http://%s:%s", aws_lb.bff_alb.dns_name, var.ports.bff_service)
+          value = format("http://%s", aws_lb.bff_alb.dns_name)
         },
         {
           name  = "RATE_LIMITER_REPLENISH_RATE"
@@ -123,7 +123,7 @@ resource "aws_ecs_service" "gtw_service" {
 
   network_configuration {
     security_groups  = [aws_security_group.gtw_ecs_tasks.id]
-    subnets          = aws_subnet.public[*].id
+    subnets          = aws_subnet.private[*].id
     assign_public_ip = true
   }
 
