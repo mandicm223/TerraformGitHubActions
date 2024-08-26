@@ -6,8 +6,8 @@ resource "aws_security_group" "lb" {
 
   ingress {
     protocol        = "tcp"
-    from_port       = var.ports.bff_service
-    to_port         = var.ports.bff_service
+    from_port       = var.ports.http   # staviti 80
+    to_port         = var.ports.http
     security_groups = [aws_security_group.gtw_ecs_tasks.id]
   }
 
@@ -27,8 +27,8 @@ resource "aws_security_group" "gtw_lb" {
 
   ingress {
     protocol    = "tcp"
-    from_port   = 80
-    to_port     = 80
+    from_port   = var.ports.http
+    to_port     = var.ports.http
     cidr_blocks = ["0.0.0.0/0"]
   }
 
