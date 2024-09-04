@@ -18,33 +18,41 @@ resource "aws_iam_role" "codepipeline_role" {
 resource "aws_iam_role_policy" "codepipeline_service_role_policy" {
   role = aws_iam_role.codepipeline_role.id
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "codestar-connections:CreateConnection",
-         "codestar-connections:DeleteConnection",
-         "codestar-connections:GetConnection",
-         "codestar-connections:ListConnections",
-         "codestar-connections:GetInstallationUrl",
-         "codestar-connections:GetIndividualAccessToken",
-         "codestar-connections:ListInstallationTargets",
-         "codestar-connections:StartOAuthHandshake",
-         "codestar-connections:UpdateConnectionInstallation",
-         "codestar-connections:UseConnection",
-         "codestar-connections:TagResource",
-         "codestar-connections:ListTagsForResource",
-         "codestar-connections:UntagResource",
-         "s3:*"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "codepipeline:*",
+          "codebuild:BatchGetBuilds",
+          "codebuild:StartBuild",
+          "codebuild:BatchGetProjects",
+          "codebuild:BatchGetBuildBatches",
+          "codebuild:ListBuildsForProject",
+          "codedeploy:RegisterApplicationRevision",
+          "codedeploy:GetApplicationRevision",
+          "codedeploy:GetDeploymentConfig",
+          "codedeploy:CreateDeployment",
+          "codedeploy:GetDeployment",
+          "codedeploy:GetDeploymentGroup",
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:GetBucketVersioning",
+          "s3:PutBucketVersioning",
+          "s3:PutBucketAcl",
+          "s3:GetBucketAcl",
+          "cloudwatch:*",
+          "codestar-connections:UseConnection",
+          "iam:PassRole",
+          "lambda:InvokeFunction",
+          "lambda:GetFunctionConfiguration"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "codepipeline_attach" {
