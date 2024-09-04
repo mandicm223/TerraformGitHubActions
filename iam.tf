@@ -1,97 +1,67 @@
-# IAM Role for CodeBuild
-resource "aws_iam_role" "codebuild_service_role" {
-  name = "codebuild-service-role"
+resource "aws_iam_role" "codepipeline_role" {
+  name = "codepipeline-role"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "codebuild.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "codepipeline.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
-resource "aws_iam_role_policy" "codebuild_service_role_policy" {
-  role = aws_iam_role.codebuild_service_role.id
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:*",
-        "logs:*",
-        "cloudwatch:*",
-        "secretsmanager:GetSecretValue"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+resource "aws_iam_role_policy_attachment" "codepipeline_attach" {
+  role       = aws_iam_role.codepipeline_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodePipelineFullAccess"
 }
 
-# IAM Role for CodeDeploy
-resource "aws_iam_role" "codedeploy_service_role" {
-  name = "codedeploy-service-role"
+resource "aws_iam_role" "codebuild_role" {
+  name = "codebuild-role"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "codedeploy.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "codebuild.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
-resource "aws_iam_role_policy" "codedeploy_service_role_policy" {
-  role = aws_iam_role.codedeploy_service_role.id
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:*",
-        "ec2:*",
-        "lambda:*",
-        "autoscaling:*",
-        "sns:*",
-        "cloudwatch:*",
-        "ecs:DescribeServices",
-        "ecs:UpdateService",
-        "ecs:CreateTaskSet",
-        "ecs:DeleteTaskSet",
-        "ecs:DescribeTaskSets",
-        "ecs:DescribeTasks",
-        "elasticloadbalancing:DescribeTargetGroups",
-        "elasticloadbalancing:DescribeTargetHealth",
-        "elasticloadbalancing:RegisterTargets",
-        "elasticloadbalancing:DeregisterTargets"
-      ],
-      "Resource": "*"
-    }
-  ]
+resource "aws_iam_role_policy_attachment" "codebuild_attach" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
 }
-EOF
+
+resource "aws_iam_role" "codedeploy_role" {
+  name = "codedeploy-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "codedeploy.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "codedeploy_attach" {
+  role       = aws_iam_role.codedeploy_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
