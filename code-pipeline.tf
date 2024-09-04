@@ -1,3 +1,8 @@
+resource "aws_codestarconnections_connection" "github_connection" {
+  name          = "github-connection"
+  provider_type = "GitHub"
+}
+
 resource "aws_codepipeline" "codepipeline" {
   name     = "github-to-aws-pipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
@@ -12,15 +17,14 @@ resource "aws_codepipeline" "codepipeline" {
     action {
       name             = "Source"
       category         = "Source"
-      owner            = "ThirdParty"
-      provider         = "GitHub"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
       version          = "1"
       output_artifacts = ["source_output"]
       configuration = {
-        Owner      = "mandicm223"
-        Repo       = "https://github.com/mandicm223/example-gh-code-pipeline"
-        Branch     = "main"
-        OAuthToken = data.aws_secretsmanager_secret_version.github_token_value.secret_string
+        ConnectionArn = aws_codestarconnections_connection.github_connection.arn
+        FullRepositoryId = "mandicm223/https://github.com/mandicm223/example-gh-code-pipeline"
+        BranchName     = "main"
       }
     }
   }

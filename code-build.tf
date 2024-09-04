@@ -50,8 +50,4 @@ resource "aws_codebuild_project" "build_project" {
     type      = "CODEPIPELINE"
     buildspec = "buildspec.yml"
   }
-
-  cache {
-    type = "LOCAL"
-  }
 }
