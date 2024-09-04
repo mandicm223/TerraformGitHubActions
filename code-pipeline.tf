@@ -19,11 +19,11 @@ resource "aws_codepipeline" "codepipeline" {
       category         = "Source"
       owner            = "AWS"
       provider         = "CodeStarSourceConnection"
-      version          = "2"
+      version          = "1"
       output_artifacts = ["source_output"]
       configuration = {
         ConnectionArn    = aws_codestarconnections_connection.github_connection.arn
-        FullRepositoryId = "mandicm223/https://github.com/mandicm223/example-gh-code-pipeline"
+        FullRepositoryId = "mandicm223/example-gh-code-pipeline"
         BranchName       = "main"
       }
     }
