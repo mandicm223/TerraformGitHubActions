@@ -142,6 +142,6 @@ resource "aws_ecs_service" "gtw_service" {
   depends_on = [aws_ecs_service.bff_service]
 
   lifecycle {
-    ignore_changes = [desired_count]
+    ignore_changes = [task_definition, desired_count, load_balancer]
   }
 }
