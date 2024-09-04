@@ -17,9 +17,9 @@ resource "aws_codepipeline" "codepipeline" {
       version          = "1"
       output_artifacts = ["source_output"]
       configuration = {
-        Owner  = "mandicm223"
-        Repo   = "https://github.com/mandicm223/example-gh-code-pipeline"
-        Branch = "main"
+        Owner      = "mandicm223"
+        Repo       = "https://github.com/mandicm223/example-gh-code-pipeline"
+        Branch     = "main"
         OAuthToken = data.aws_secretsmanager_secret_version.github_token_value.secret_string
       }
     }
@@ -41,19 +41,19 @@ resource "aws_codepipeline" "codepipeline" {
     }
   }
 
-#   stage {
-#     name = "Deploy"
-#     action {
-#       name            = "Deploy"
-#       category        = "Deploy"
-#       owner           = "AWS"
-#       version          = "1"
-#       provider        = "CodeDeploy"
-#       input_artifacts = ["build_output"]
-#       configuration = {
-#         ApplicationName     = aws_codedeploy_app.app.name
-#         DeploymentGroupName = aws_codedeploy_deployment_group.deployment_group.name
-#       }
-#     }
-#   }
+  #   stage {
+  #     name = "Deploy"
+  #     action {
+  #       name            = "Deploy"
+  #       category        = "Deploy"
+  #       owner           = "AWS"
+  #       version          = "1"
+  #       provider        = "CodeDeploy"
+  #       input_artifacts = ["build_output"]
+  #       configuration = {
+  #         ApplicationName     = aws_codedeploy_app.app.name
+  #         DeploymentGroupName = aws_codedeploy_deployment_group.deployment_group.name
+  #       }
+  #     }
+  #   }
 }
