@@ -25,28 +25,28 @@ resource "aws_iam_role_policy" "codepipeline_service_role_policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "codepipeline:*",
-        "codebuild:BatchGetBuilds",
-        "codebuild:StartBuild",
-        "codebuild:BatchGetProjects",
-        "codebuild:BatchGetBuildBatches",
-        "codebuild:ListBuildsForProject",
-        "codedeploy:RegisterApplicationRevision",
-        "codedeploy:GetApplicationRevision",
-        "codedeploy:GetDeploymentConfig",
-        "codedeploy:CreateDeployment",
-        "codedeploy:GetDeployment",
-        "codedeploy:GetDeploymentGroup",
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:GetObjectVersion",
-        "s3:GetBucketVersioning",
-        "s3:PutBucketVersioning",
-        "s3:PutBucketAcl",
-        "s3:GetBucketAcl",
-        "cloudwatch:*",
-        "codestar-connections:UseConnection",
-        "iam:PassRole",
+         "codepipeline:*",
+         "codebuild:BatchGetBuilds",
+         "codebuild:StartBuild",
+         "codebuild:BatchGetProjects",
+         "codebuild:BatchGetBuildBatches",
+         "codebuild:ListBuildsForProject",
+         "codedeploy:RegisterApplicationRevision",
+         "codedeploy:GetApplicationRevision",
+         "codedeploy:GetDeploymentConfig",
+         "codedeploy:CreateDeployment",
+         "codedeploy:GetDeployment",
+         "codedeploy:GetDeploymentGroup",
+         "s3:PutObject",
+         "s3:GetObject",
+         "s3:GetObjectVersion",
+         "s3:GetBucketVersioning",
+         "s3:PutBucketVersioning",
+         "s3:PutBucketAcl",
+         "s3:GetBucketAcl",
+         "cloudwatch:*",
+         "codestar-connections:UseConnection",
+         "iam:PassRole",
       ],
       "Resource": "*"
     }
@@ -55,10 +55,10 @@ resource "aws_iam_role_policy" "codepipeline_service_role_policy" {
 EOF
 }
 
-# resource "aws_iam_role_policy_attachment" "codepipeline_attach" {
-#   role       = aws_iam_role.codepipeline_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
-# }
+resource "aws_iam_role_policy_attachment" "codepipeline_attach" {
+  role       = aws_iam_role.codepipeline_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
+}
 
 resource "aws_iam_role" "codebuild_role" {
   name = "codebuild-role"
