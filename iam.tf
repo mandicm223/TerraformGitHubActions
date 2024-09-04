@@ -15,6 +15,37 @@ resource "aws_iam_role" "codepipeline_role" {
   })
 }
 
+resource "aws_iam_role_policy" "codepipeline_service_role_policy" {
+  role = aws_iam_role.codepipeline_role.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:CreateConnection",
+         "codestar-connections:DeleteConnection",
+         "codestar-connections:GetConnection",
+         "codestar-connections:ListConnections",
+         "codestar-connections:GetInstallationUrl",
+         "codestar-connections:GetIndividualAccessToken",
+         "codestar-connections:ListInstallationTargets",
+         "codestar-connections:StartOAuthHandshake",
+         "codestar-connections:UpdateConnectionInstallation",
+         "codestar-connections:UseConnection",
+         "codestar-connections:TagResource",
+         "codestar-connections:ListTagsForResource",
+         "codestar-connections:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_role_policy_attachment" "codepipeline_attach" {
   role       = aws_iam_role.codepipeline_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
