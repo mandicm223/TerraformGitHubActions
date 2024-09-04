@@ -37,7 +37,8 @@ resource "aws_iam_role_policy" "codepipeline_service_role_policy" {
          "codestar-connections:UseConnection",
          "codestar-connections:TagResource",
          "codestar-connections:ListTagsForResource",
-         "codestar-connections:UntagResource"
+         "codestar-connections:UntagResource",
+         "s3:*"
       ],
       "Resource": "*"
     }
