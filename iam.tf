@@ -1,3 +1,4 @@
+## CODE PIPELINE PERMISSIONS ##
 resource "aws_iam_role" "codepipeline_role" {
   name = "codepipeline-role"
 
@@ -60,6 +61,9 @@ resource "aws_iam_role_policy_attachment" "codepipeline_attach" {
   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess"
 }
 
+
+## CODE BUILD PERMISSIONS ##
+
 resource "aws_iam_role" "codebuild_role" {
   name = "codebuild-role"
 
@@ -77,10 +81,44 @@ resource "aws_iam_role" "codebuild_role" {
   })
 }
 
+resource "aws_iam_role_policy" "codebuild_service_role_policy" {
+  role = aws_iam_role.codebuild_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:ListBucket",
+          "codebuild:BatchGetBuilds",
+          "codebuild:StartBuild",
+          "codebuild:BatchGetProjects",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeVpcs",
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "codebuild_attach" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
 }
+
+## CODE DEPLOY PERMISSIONS ##
 
 resource "aws_iam_role" "codedeploy_role" {
   name = "codedeploy-role"
@@ -99,10 +137,49 @@ resource "aws_iam_role" "codedeploy_role" {
   })
 }
 
+resource "aws_iam_role_policy" "codedeploy_service_role_policy" {
+  role = aws_iam_role.codedeploy_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ecs:DescribeServices",
+          "ecs:UpdateService",
+          "ecs:DescribeTaskDefinition",
+          "ecs:DescribeTasks",
+          "ecs:ListTasks",
+          "events:PutRule",
+          "events:PutTargets",
+          "events:DescribeRule",
+          "lambda:InvokeFunction",
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:GetBucketVersioning",
+          "application-autoscaling:RegisterScalableTarget",
+          "application-autoscaling:DeleteScalingPolicy",
+          "application-autoscaling:DeregisterScalableTarget",
+          "application-autoscaling:DescribeScalableTargets",
+          "application-autoscaling:PutScalingPolicy",
+          "application-autoscaling:DescribeScalingPolicies",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DeleteAlarms"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "codedeploy_attach" {
   role       = aws_iam_role.codedeploy_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
 }
+
+## ECS TASKS PERMISSIONS ##
 
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecs-execution-role"
