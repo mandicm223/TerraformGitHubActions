@@ -5,7 +5,7 @@ resource "aws_codestarconnections_connection" "github_connection" {
 
 resource "aws_codepipeline" "codepipeline" {
   name     = "bff-pipeline"
-  role_arn = aws_iam_role.codepipeline_role.arn
+  role_arn = module.iam.codepipeline_role_arn
 
   artifact_store {
     location = aws_s3_bucket.build_artifacts.bucket

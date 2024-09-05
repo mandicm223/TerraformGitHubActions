@@ -1,6 +1,6 @@
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
   name       = "redis-subnet-group"
-  subnet_ids = aws_subnet.private.*.id
+  subnet_ids = module.vpc.subnet_ids_private
 
   tags = {
     Name = "redis-subnet-group"
