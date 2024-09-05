@@ -2,7 +2,7 @@
 resource "aws_security_group" "lb" {
   name        = "cb-load-balancer-security-group"
   description = "controls access to the ALB"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     protocol        = "tcp"
@@ -44,7 +44,7 @@ resource "aws_security_group" "gtw_lb" {
 resource "aws_security_group" "ecs_tasks" {
   name        = "cb-ecs-tasks-security-group"
   description = "allow inbound access from the ALB only"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     protocol        = "tcp"
@@ -70,7 +70,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_security_group" "gtw_ecs_tasks" {
   name   = "gtw-ecs-tasks-security-group"
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.vpc.vpc_id
 
   ingress {
     protocol        = "tcp"
@@ -112,7 +112,7 @@ resource "aws_security_group" "gtw_ecs_tasks" {
 resource "aws_security_group" "redis_sg" {
   name        = "redis-sg"
   description = "Allow access to Redis"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     from_port       = 6379
