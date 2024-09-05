@@ -33,7 +33,11 @@ variable "github_secret_name" {
   type        = string
 }
 
-variable "az_count" {
+variable "cidr_block" {
+  description = "The CIDR block for the VPC"
+  default     = "172.17.0.0/16"
+}
+variable "subnet_count" {
   description = "Number of AZs to cover in a given region"
   default     = "2"
 }
