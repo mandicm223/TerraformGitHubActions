@@ -19,7 +19,7 @@ variable "service_definitions" {
 
 variable "cluster_id" {
   description = "Cluster ID"
-  type        = String
+  type        = string
 }
 
 variable "subnet_ids" {
