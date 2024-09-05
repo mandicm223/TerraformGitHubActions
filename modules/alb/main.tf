@@ -8,7 +8,7 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_lb_target_group" "tg" {
-  name     = format("tg-%s" , var.alb_name)
+  name     = var.tg_name
   port     = var.tg_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id

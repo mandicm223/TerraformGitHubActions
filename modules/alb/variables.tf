@@ -8,6 +8,11 @@ variable "alb_name" {
   type        = string
 }
 
+variable "tg_name" {
+  description = "ALB Name"
+  type        = string
+}
+
 variable "subnet_ids" {
   description = "List of subnet IDs"
   type        = list(string)
