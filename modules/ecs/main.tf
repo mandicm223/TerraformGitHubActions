@@ -3,9 +3,9 @@ resource "aws_ecs_cluster" "cluster" {
 }
 
 resource "aws_ecs_task_definition" "task" {
-  count = 1
-  family    = element("name", var.task_definitions[count.index],)
-  container_definitions = element("container_definitions", var.task_definitions[count.index])
+  count     = length(var.task_definitions)
+  family    = element(var.task_definitions[count.index], "name")
+  container_definitions = element(var.task_definitions[count.index], "container_definitions")
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   memory                   = "512"
@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "task" {
 }
 
 resource "aws_ecs_service" "service" {
-  count                  = 1
+  count     = length(var.task_definitions)
   name                   = element(var.service_definitions[count.index], "name")
   cluster                = aws_ecs_cluster.cluster.id
   task_definition        = element(aws_ecs_task_definition.task.*.arn, count.index)
