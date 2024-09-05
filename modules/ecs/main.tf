@@ -4,8 +4,8 @@ resource "aws_ecs_cluster" "cluster" {
 
 resource "aws_ecs_task_definition" "task" {
   count     = length(var.task_definitions)
-  family    = element(var.task_definitions[count.index], "name")
-  container_definitions = element(var.task_definitions[count.index], "container_definitions")
+  family    = var.task_definitions[count.index].name
+  container_definitions = var.task_definitions[count.index].container_definitions
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   memory                   = "512"
@@ -15,10 +15,10 @@ resource "aws_ecs_task_definition" "task" {
 
 resource "aws_ecs_service" "service" {
   count     = length(var.task_definitions)
-  name                   = element(var.service_definitions[count.index], "name")
+  name                   = var.service_definitions[count.index].name
   cluster                = aws_ecs_cluster.cluster.id
-  task_definition        = element(aws_ecs_task_definition.task.*.arn, count.index)
-  desired_count          = element(var.service_definitions[count.index], "desired_count")
+  task_definition        = aws_ecs_task_definition.task[count.index].arn
+  desired_count          = var.service_definitions[count.index].desired_count
   launch_type            = "FARGATE"
 
   network_configuration {
@@ -28,9 +28,9 @@ resource "aws_ecs_service" "service" {
   }
 
   load_balancer {
-    target_group_arn = element(var.service_definitions[count.index], "target_group_arn")
-    container_name   = element(var.service_definitions[count.index], "container_name")
-    container_port   = element(var.service_definitions[count.index], "container_port")
+    target_group_arn = var.service_definitions[count.index].target_group_arn
+    container_name   = var.service_definitions[count.index].container_name
+    container_port   = var.service_definitions[count.index].container_port
   }
 
 #   deployment_controller {
