@@ -4,7 +4,7 @@ resource "aws_codestarconnections_connection" "github_connection" {
 }
 
 resource "aws_codepipeline" "codepipeline" {
-  name     = "github-to-aws-pipeline"
+  name     = "bff-pipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
 
   artifact_store {
@@ -32,7 +32,7 @@ resource "aws_codepipeline" "codepipeline" {
   stage {
     name = "Build"
     action {
-      name             = "Build"
+      name             = "BuildBff"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
