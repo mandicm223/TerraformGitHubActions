@@ -4,8 +4,8 @@ resource "aws_ecs_cluster" "cluster" {
 
 resource "aws_ecs_task_definition" "task" {
   count = 1
-  family    = element(var.task_definitions[count.index], "name")
-  container_definitions = element(var.task_definitions[count.index], "container_definitions")
+  family    = element("name", var.task_definitions[count.index],)
+  container_definitions = element("container_definitions", var.task_definitions[count.index])
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   memory                   = "512"

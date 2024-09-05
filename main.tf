@@ -118,7 +118,7 @@ module "ecs_gtw" {
           { name : "ASICS_AUTH_CLIENT_ID", value : var.asics_auth_client_id },
           { name : "ASICS_AUTH_CLIENT_SECRET", value : var.asics_auth_client_secret },
           { name : "ASICS_AUTH_INTROSPECT_ENDPOINT", value : var.asics_auth_introspect_endpoint },
-          { name : "BFF_URL", value : format("http://%s", aws_lb.bff_alb.dns_name) },
+          { name : "BFF_URL", value : format("http://%s", module.bff_alb.dns_name) },
           { name : "RATE_LIMITER_REPLENISH_RATE", value : var.rate_limiter_replenish_rate },
           { name : "RATE_LIMITER_BURST_CAPACITY", value : var.rate_limiter_burst_capacity },
           { name : "RETRY_COUNT", value : var.retry_count },
