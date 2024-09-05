@@ -28,25 +28,29 @@ module "vpc" {
   subnet_count = var.subnet_count
 }
 
+module "iam" {
+  source = "./modules/iam"
+}
+
 module "bff_alb" {
   source     = "./modules/alb"
   alb_name   = "bff-alb"
-  tg_name    = format("%s-tg", local.local.bff_service_name)
+  tg_name    = format("%s-tg", local.bff_service_name)
   internal   = true
   tg_port    = var.ports.bff_service
   vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.subnet_ids
+  subnet_ids = module.vpc.subnet_ids_private
   sg_id      = aws_security_group.lb.id
 }
 
 module "gtw_alb" {
   source     = "./modules/alb"
   alb_name   = "gtw-alb"
-  tg_name    = format("%s-tg", local.local.gtw_service_name)
+  tg_name    = format("%s-tg", local.gtw_service_name)
   internal   = false
   tg_port    = var.ports.gtw_service
   vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.subnet_ids
+  subnet_ids = module.vpc.subnet_ids_public
   sg_id      = aws_security_group.gtw_lb.id
 }
 
@@ -89,7 +93,7 @@ module "ecs_bff" {
       desired_count    = local.bff_service_desired_count
       container_name   = local.bff_service_name
       container_port   = var.ports.bff_service
-      target_group_arn = module.alb.target_group_arn
+      target_group_arn = module.bff_alb.target_group_arn
   }]
   subnet_ids         = module.vpc.subnet_ids_private
   sg_id              = aws_security_group.ecs_tasks.id

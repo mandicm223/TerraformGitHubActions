@@ -23,7 +23,7 @@ resource "aws_security_group" "lb" {
 resource "aws_security_group" "gtw_lb" {
   name        = "gtw-load-balancer-security-group"
   description = "controls access to the ALB"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     protocol    = "tcp"
