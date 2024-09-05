@@ -1,7 +1,3 @@
-resource "aws_ecs_cluster" "cluster" {
-  name = "asics-cluster"
-}
-
 resource "aws_ecs_task_definition" "task" {
   count     = length(var.task_definitions)
   family    = var.task_definitions[count.index].name
@@ -16,7 +12,7 @@ resource "aws_ecs_task_definition" "task" {
 resource "aws_ecs_service" "service" {
   count     = length(var.task_definitions)
   name                   = var.service_definitions[count.index].name
-  cluster                = aws_ecs_cluster.cluster.id
+  cluster                = var.cluster_id
   task_definition        = aws_ecs_task_definition.task[count.index].arn
   desired_count          = var.service_definitions[count.index].desired_count
   launch_type            = "FARGATE"

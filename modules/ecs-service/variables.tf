@@ -17,6 +17,11 @@ variable "service_definitions" {
   }))
 }
 
+variable "cluster_id" {
+  description = "Cluster ID"
+  type        = String
+}
+
 variable "subnet_ids" {
   description = "List of subnet IDs"
   type        = list(string)

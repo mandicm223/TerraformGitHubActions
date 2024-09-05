@@ -54,9 +54,14 @@ module "gtw_alb" {
   sg_id      = aws_security_group.gtw_lb.id
 }
 
-module "ecs_bff" {
-  source = "./modules/ecs"
+module "asics_cluster" {
+  source       = "./modules/ecs-cluster"
+  cluster_name = "asics_cluster"
+}
 
+module "ecs_bff" {
+  source = "./modules/ecs-service"
+  cluster_id = module.asics_cluster.cluster_id
   task_definitions = [
     {
       name = "bff-task"
@@ -95,6 +100,7 @@ module "ecs_bff" {
       container_port   = var.ports.bff_service
       target_group_arn = module.bff_alb.target_group_arn
   }]
+  
   subnet_ids         = module.vpc.subnet_ids_private
   sg_id              = aws_security_group.ecs_tasks.id
   execution_role_arn = module.iam.ecs_task_execution_role_arn
@@ -102,7 +108,7 @@ module "ecs_bff" {
 }
 
 module "ecs_gtw" {
-  source = "./modules/ecs"
+  source = "./modules/ecs-service"
 
   task_definitions = [
     {
@@ -110,6 +116,7 @@ module "ecs_gtw" {
       container_definitions = jsonencode([{
         name : local.gtw_service_name
         image : local.gtw_service_docker_image
+        cluster_id : module.asics_cluster.cluster_id
         cpu : local.gtw_service_fargate_cpu
         memory : local.gtw_service_fargate_memory
         environment : [
@@ -142,5 +149,6 @@ module "ecs_gtw" {
   subnet_ids         = module.vpc.subnet_ids_private
   sg_id              = aws_security_group.gtw_ecs_tasks.id
   execution_role_arn = module.iam.ecs_task_execution_role_arn
+  cluster_id = module.asics_cluster.cluster_id
 
 }
