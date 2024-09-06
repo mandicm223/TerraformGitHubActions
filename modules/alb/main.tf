@@ -12,6 +12,7 @@ resource "aws_lb_target_group" "tg" {
   port     = var.tg_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  target_type = "ip"
   health_check {
     healthy_threshold   = "2"
     interval            = "60"
