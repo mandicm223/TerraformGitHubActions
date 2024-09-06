@@ -1,3 +1,11 @@
+locals {
+  bff_service_docker_image   = format("%sasics-bff:latest", var.bff_ecr_url)
+  bff_service_name           = "bff-service"
+  bff_service_desired_count  = 2
+  bff_service_fargate_cpu    = 512
+  bff_service_fargate_memory = 1024
+}
+
 module "ecs_bff" {
   source     = "./modules/ecs-service"
   cluster_id = module.asics_cluster.cluster_id
