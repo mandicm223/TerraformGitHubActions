@@ -37,7 +37,7 @@ module "ecs_gtw" {
   }]
   service_definitions = [
     {
-      name             = local.bff_service_name
+      name             = local.gtw_service_name
       desired_count    = local.gtw_service_desired_count
       container_name   = local.gtw_service_name
       container_port   = var.ports.gtw_service
