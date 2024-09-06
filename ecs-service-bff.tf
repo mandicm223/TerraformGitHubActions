@@ -9,6 +9,12 @@ module "ecs_bff" {
         image : local.bff_service_docker_image
         cpu : local.bff_service_fargate_cpu
         memory : local.bff_service_fargate_memory
+        portMappings : [
+          {
+            "containerPort" : var.ports.bff_service
+            "hostPort" : var.ports.bff_service
+          }
+        ]
         environment : [
           { name : "SPRING_PROFILES_ACTIVE", value : var.env_bff_service },
           { name : "REDIS_NODES", value : local.redis_endpoints_combined },

@@ -10,6 +10,12 @@ module "ecs_gtw" {
         cluster_id : module.asics_cluster.cluster_id
         cpu : local.gtw_service_fargate_cpu
         memory : local.gtw_service_fargate_memory
+        portMappings : [
+          {
+            "containerPort" : var.ports.gtw_service
+            "hostPort" : var.ports.gtw_service
+          }
+        ]
         environment : [
           { name : "SPRING_PROFILES_ACTIVE", value : var.env_bff_service },
           { name : "REDIS_NODES", value : local.redis_endpoints_combined },
@@ -37,6 +43,7 @@ module "ecs_gtw" {
       container_port   = var.ports.gtw_service
       target_group_arn = module.gtw_alb.target_group_arn
   }]
+
   subnet_ids         = module.vpc.subnet_ids_private
   sg_id              = aws_security_group.gtw_ecs_tasks.id
   execution_role_arn = module.iam.ecs_task_execution_role_arn
