@@ -1,3 +1,27 @@
+resource "aws_codebuild_project" "build_project" {
+  name         = var.code_build_project_name
+  service_role = var.code_build_role_arn
+
+  artifacts {
+    type = "CODEPIPELINE"
+  }
+
+  environment {
+    compute_type = "BUILD_GENERAL1_SMALL"
+    image        = "aws/codebuild/standard:4.0"
+    type         = "LINUX_CONTAINER"
+    environment_variable {
+      name  = "AWS_DEFAULT_REGION"
+      value = "default region"
+    }
+  }
+
+  source {
+    type      = "CODEPIPELINE"
+    buildspec = "buildspec.yml"
+  }
+}
+
 # resource "aws_codedeploy_app" "application" {
 #   name             = "application"
 #   compute_platform = "ECS"
@@ -87,3 +111,67 @@
 #     service_name = aws_ecs_service.bff_service.name
 #   }
 # }
+
+resource "aws_codestarconnections_connection" "github_connection" {
+  name          = "github-connection"
+  provider_type = "GitHub"
+}
+
+resource "aws_codepipeline" "codepipeline" {
+  name     = var.pipeline_name
+  role_arn = var.code_pipeline_role_arn
+
+  artifact_store {
+    location = var.artifacts_bucket_name
+    type     = "S3"
+  }
+
+  stage {
+    name = "Source"
+    action {
+      name             = "Source"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
+      output_artifacts = ["source_output"]
+      configuration = {
+        ConnectionArn    = aws_codestarconnections_connection.github_connection.arn
+        FullRepositoryId = var.full_repository_id
+        BranchName       = var.repository_brach
+      }
+    }
+  }
+
+  stage {
+    name = "Build"
+    action {
+      name             = aws_codebuild_project.build_project.name
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_output"]
+      configuration = {
+        ProjectName = aws_codebuild_project.build_project.name
+      }
+    }
+  }
+
+  #   stage {
+  #     name = "Deploy"
+  #     action {
+  #       name            = "Deploy"
+  #       category        = "Deploy"
+  #       owner           = "AWS"
+  #       version          = "1"
+  #       provider        = "CodeDeploy"
+  #       input_artifacts = ["build_output"]
+  #       configuration = {
+  #         ApplicationName     = aws_codedeploy_app.app.name
+  #         DeploymentGroupName = aws_codedeploy_deployment_group.deployment_group.name
+  #       }
+  #     }
+  #   }
+}
