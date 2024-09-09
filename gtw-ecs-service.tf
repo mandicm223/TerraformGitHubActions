@@ -30,6 +30,14 @@ module "ecs_gtw" {
         cluster_id : module.asics_cluster.cluster_id
         cpu : local.gtw_service_fargate_cpu
         memory : local.gtw_service_fargate_memory
+        logConfiguration : {
+          "logDriver" : "awslogs",
+          "options" : {
+            "awslogs-group" : format("/ecs/%s", local.gtw_service_name),
+            "awslogs-region" : var.default_region,
+            "awslogs-stream-prefix" : "ecs"
+          }
+        },
         portMappings : [
           {
             "containerPort" : var.ports.gtw_service

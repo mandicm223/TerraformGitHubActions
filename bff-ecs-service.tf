@@ -17,6 +17,14 @@ module "ecs_bff" {
         image : local.bff_service_docker_image
         cpu : local.bff_service_fargate_cpu
         memory : local.bff_service_fargate_memory
+        logConfiguration : {
+          "logDriver" : "awslogs",
+          "options" : {
+            "awslogs-group" : format("/ecs/%s", local.bff_service_name),
+            "awslogs-region" : var.default_region,
+            "awslogs-stream-prefix" : "ecs"
+          }
+        },
         portMappings : [
           {
             "containerPort" : var.ports.bff_service
