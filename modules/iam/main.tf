@@ -200,6 +200,36 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 EOF
 }
+
+data "aws_iam_policy_document" "services_ssm_access" {
+  statement {
+    effect = "Allow"
+    resources = [
+      var.asics_auth_client_secret,
+      var.conntentstack_delivery_token
+    ]
+    actions = [
+      "ssm:GetParameters"
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    resources = [
+    var.kms_key]
+    actions = [
+      "kms:Decrypt"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "service_ssm_access" {
+  name   = "ssm-service-access"
+  policy = data.aws_iam_policy_document.services_ssm_access.json
+  role   = aws_iam_role.ecs_task_execution_role.id
+}
+
+
 resource "aws_iam_role" "ecs_task_role" {
   name = "ecs-task-role"
 
