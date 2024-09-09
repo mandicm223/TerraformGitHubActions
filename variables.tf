@@ -68,6 +68,57 @@ variable "clutch_base_url_bff_service" {
 variable "clutch_retry_max_attempts_bff_service" {
   default = "3"
 }
+variable "contentstack_url" {
+  default = "https://graphql.contentstack.com/stacks/blta941c3d5e669d507?environment=development"
+}
+
+variable "contentstack_retry_max_attempts" {
+  default = "3"
+}
+
+variable "contentstack_retry_wait_duration" {
+  default = "500ms"
+}
+
+variable "contentstack_circuit_breaker_failure_rate_threshold" {
+  default = "50"
+}
+
+variable "contentstack_circuit_breaker_ring_buffer_size_in_half_open_state" {
+  default = "10"
+}
+
+variable "contentstack_circuit_breaker_ring_buffer_size_in_closed_state" {
+  default = "100"
+}
+
+variable "contentstack_circuit_breaker_wait_duration_in_open_state" {
+  default = "30"
+}
+
+variable "contentstack_circuit_breaker_permitted_number_of_calls_in_half_open_state" {
+  default = "5"
+}
+
+variable "contentstack_bulkhead_max_concurrent_calls" {
+  default = "100"
+}
+
+variable "contentstack_time_limiter_timeout_duration" {
+  default = "2"
+}
+
+variable "contentstack_rate_limiter_capacity" {
+  default = "2"
+}
+
+variable "contentstack_rate_limiter_period" {
+  default = "60"
+}
+
+variable "contentstack_rate_limiter_tokens" {
+  default = "10"
+}
 
 variable "clutch_retry_wait_duration_bff_service" {
   default = "500ms"
@@ -120,6 +171,8 @@ variable "cache_config_ttl_bff_service" {
 variable "redis_password_bff_service" {
   default = ""
 }
+
+
 
 ### Gtw service variables
 
