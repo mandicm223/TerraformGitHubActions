@@ -1,6 +1,6 @@
 locals {
-  asics_auth_client_secret     = "arn:aws:ssm:eu-west-1:802288441694:parameter/ecs/gtw_service/asics_auth_client_secret"
-  conntentstack_delivery_token = "arn:aws:ssm:eu-west-1:802288441694:parameter/ecs/bff_service/conntentstack_delivery_token"
+  asics_auth_client_secret     = format("arn:aws:ssm:eu-west-1:%s:parameter/ecs/%s/asics_auth_client_secret", var.account_ids, local.gtw_service_name)
+  conntentstack_delivery_token = format("arn:aws:ssm:eu-west-1:%s:parameter/ecs/%s/conntentstack_delivery_token", local.bff_service_name)
 }
 
 module "iam" {

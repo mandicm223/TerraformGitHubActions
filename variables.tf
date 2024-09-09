@@ -3,7 +3,7 @@
 variable "default_region" {
   type        = string
   default     = "eu-west-1"
-  description = "your default region"
+  description = "default region"
 }
 
 variable "bucket_rstate" {
@@ -27,10 +27,10 @@ variable "environments" {
   }
 }
 
-variable "github_secret_name" {
-  default     = "GitHubToken"
-  description = "GitHub Personal Access Token"
+variable "account_ids" {
   type        = string
+  default     = "802288441694"
+  description = "AWS Account ids"
 }
 
 variable "cidr_block" {
