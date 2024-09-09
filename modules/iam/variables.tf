@@ -7,3 +7,9 @@ variable "conntentstack_delivery_token" {
   description = "conntent stack delivery token"
   type = string
 }
+
+variable "kms_key" {
+    description = "Kms to decrpty ssm"
+    type = string
+  
+}

@@ -216,7 +216,7 @@ data "aws_iam_policy_document" "services_ssm_access" {
   statement {
     effect = "Allow"
     resources = [
-    data.aws_kms_key.ssm_key_id.arn]
+    var.kms_key]
     actions = [
       "kms:Decrypt"
     ]
