@@ -31,10 +31,12 @@ module "ecs_bff" {
             "hostPort" : var.ports.bff_service
           }
         ]
+        secrets : [
+          { name : "CONTENTSTACK_DELIVERY_TOKEN", valueFrom : local.conntentstack_delivery_token },
+        ]
         environment : [
           { name : "SPRING_PROFILES_ACTIVE", value : var.env_bff_service },
           { name : "REDIS_NODES", value : local.redis_endpoints_combined },
-          { name : "CONTENTSTACK_DELIVERY_TOKEN", valueFrom : local.conntentstack_delivery_token },
           { name : "CONTENTSTACK_URL", value : var.contentstack_url },
           { name : "CONTENTSTACK_RETRY_MAX_ATTEMPTS", value : var.contentstack_retry_max_attempts },
           { name : "CONTENTSTACK_RETRY_WAIT_DURATION", value : var.contentstack_retry_wait_duration },
