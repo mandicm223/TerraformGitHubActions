@@ -7,5 +7,5 @@ module "iam" {
   source                       = "./modules/iam"
   asics_auth_client_secret     = local.asics_auth_client_secret
   conntentstack_delivery_token = local.conntentstack_delivery_token
-  kms_key = data.aws_kms_key.ssm_key_id.arn
+  kms_key                      = data.aws_kms_key.ssm_key_id.arn
 }
