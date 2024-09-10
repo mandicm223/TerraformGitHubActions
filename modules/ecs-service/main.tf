@@ -29,11 +29,11 @@ resource "aws_ecs_service" "service" {
     container_port   = var.service_definitions[count.index].container_port
   }
 
-#   deployment_controller {
-#     type = "CODE_DEPLOY"
-#   }
+  # deployment_controller {
+  #   type = "CODE_DEPLOY"
+  # }
   # lifecycle {
   #   ignore_changes = [task_definition, desired_count, load_balancer]
-  # }
+  # } 
  
 }
