@@ -149,7 +149,7 @@ variable "clutch_bulkhead_max_concurrent_calls_bff_service" {
 }
 
 variable "clutch_time_limiter_timeout_duration_bff_service" {
-  default = "2s"
+  default = "2"
 }
 
 variable "clutch_rate_limiter_capacity_bff_service" {
