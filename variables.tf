@@ -219,3 +219,11 @@ variable "circuit_breaker_wait_duration" {
 variable "circuit_breaker_failure_rate_threshold" {
   default = "50"
 }
+
+variable "http_client_connect_timeout" {
+  default = "2000"
+}
+
+variable "http_client_response_timeout" {
+  default = "12s"
+}

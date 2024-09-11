@@ -60,6 +60,8 @@ module "ecs_gtw" {
           { name : "CIRCUIT_BREAKER_SLIDING_WINDOW_SIZE", value : var.circuit_breaker_sliding_window_size },
           { name : "CIRCUIT_BREAKER_PERMITTED_CALLS", value : var.circuit_breaker_permitted_calls },
           { name : "CIRCUIT_BREAKER_WAIT_DURATION", value : var.circuit_breaker_wait_duration },
+          { name : "HTTP_CLIENT_CONNECT_TIMEOUT", value : var.http_client_connect_timeout },
+          { name : "HTTP_CLIENT_RESPONSE_TIMEOUT", value : var.http_client_response_timeout },
           { name : "CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD", value : var.circuit_breaker_failure_rate_threshold },
 
         ]
