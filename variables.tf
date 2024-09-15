@@ -225,5 +225,5 @@ variable "http_client_connect_timeout" {
 }
 
 variable "http_client_response_timeout" {
-  default = "2000"
+  default = "12s"
 }
